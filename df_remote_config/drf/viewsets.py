@@ -1,8 +1,17 @@
-from rest_framework import viewsets
+from typing import Callable, Union
 
-from df_remote_config.decorators import ACTIONS, add_dynamic_actions
+from django.utils.module_loading import import_string
+from rest_framework import permissions, views
 
 
-@add_dynamic_actions(ACTIONS)
-class RemoteConfigViewSet(viewsets.GenericViewSet):
-    pass
+class RemoteConfigView(views.APIView):
+    handler: Union[str, Callable] = ""
+    schema_name: str = ""
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request, *args, **kwargs):  # type: ignore
+        if isinstance(self.handler, str):
+            handler = import_string(self.handler)
+        else:
+            handler = self.handler
+        return handler(request, self.schema_name, *args, **kwargs)

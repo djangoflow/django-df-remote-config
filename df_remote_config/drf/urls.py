@@ -1,8 +1,15 @@
-from rest_framework.routers import DefaultRouter
+from django.urls import path
 
-from .viewsets import RemoteConfigViewSet
+from ..settings import api_settings
+from .viewsets import RemoteConfigView
 
-router = DefaultRouter()
-
-router.register("", RemoteConfigViewSet, basename="remote-config")
-urlpatterns = router.urls
+urlpatterns = [
+    path(
+        data["path"],
+        RemoteConfigView.as_view(
+            handler=data["handler"],
+            schema_name=schema_name,
+        ),
+    )
+    for schema_name, data in api_settings.REMOTE_CONFIG.items()
+]

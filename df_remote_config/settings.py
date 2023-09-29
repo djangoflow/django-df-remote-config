@@ -11,6 +11,10 @@ DEFAULTS: dict[str, dict] = {
             "path": "legal/",
             "handler": "df_remote_config.handlers.default_handler",
         },
+        "auth": {
+            "path": "auth/",
+            "handler": "df_remote_config.handlers.auth_handler",
+        },
     }
 }
 

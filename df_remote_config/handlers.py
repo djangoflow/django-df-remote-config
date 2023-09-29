@@ -11,3 +11,8 @@ def default_handler(request, schema_name, *args, **kwargs):  # type: ignore
         name=request.GET.get("name", ConfigItem.DEFAULT_NAME),
     )
     return Response(config_item.json)
+
+
+def auth_handler(request, schema_name, *args, **kwargs):  # type: ignore
+    data = {"providers": []}
+    return Response(data)

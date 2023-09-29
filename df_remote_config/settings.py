@@ -2,18 +2,17 @@ from django.conf import settings
 from rest_framework.settings import APISettings
 
 DEFAULTS: dict[str, dict] = {
-    "REMOTE_CONFIG": {
+    "PARTS": {
         # "theme": {
         #     "path": "theme/",
         #     "handler": "df_remote_config.handlers.default_handler",
         # },
         "legal": {
-            "path": "legal/",
-            "handler": "df_remote_config.handlers.default_handler",
+            "SCHEMA": "df_remote_config.schemas.legal_schema",
+            "HANDLER_CLASS": "df_remote_config.handlers.default_handler",
         },
         "auth": {
-            "path": "auth/",
-            "handler": "df_remote_config.handlers.auth_handler",
+            "HANDLER_CLASS": "df_remote_config.handlers.AuthHandler",
         },
     }
 }

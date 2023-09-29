@@ -3,16 +3,14 @@ from django.db import models
 from df_remote_config.schema import CONFIG_SCHEMA_MAP
 
 
-class JSONSchema(models.Model):
-    name = models.CharField(max_length=255, unique=True)
-    schema = models.JSONField()
+class ConfigTag(models.Model):
+    name = models.CharField(max_lenght=255, unique=True)
 
 
-class ConfigItem(models.Model):
-    DEFAULT_NAME = "default"
-
-    name = models.CharField(max_length=255, default=DEFAULT_NAME)
-    schema_name = models.CharField(max_length=255)
+class ConfigPart(models.Model):
+    schema = models.CharField()
+    sequence = models.SmallInteger()
+    tags = models.Many2Many(ConfigTag, blank=True)
     json = models.JSONField()
 
     def get_schema(self) -> dict:

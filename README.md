@@ -1,6 +1,11 @@
+
 # Django DF Remote Config
 
 Module for managing frontend application confiuration
+
+
+/remote_config/?part=legal&tags=default&...
+
 
 ## Installation:
 

@@ -16,7 +16,11 @@ class ConfigItem(models.Model):
     json = models.JSONField()
 
     def get_schema(self) -> dict:
-        try:
-            return JSONSchema.objects.get(name=self.schema_name).schema
-        except JSONSchema.DoesNotExist:
-            return CONFIG_SCHEMA_MAP[self.schema_name]
+        return get_schema_by_name(self.schema_name)
+
+
+def get_schema_by_name(name: str) -> dict:
+    try:
+        return JSONSchema.objects.get(name=name).schema
+    except JSONSchema.DoesNotExist:
+        return CONFIG_SCHEMA_MAP[name]

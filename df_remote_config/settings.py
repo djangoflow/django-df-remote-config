@@ -3,10 +3,10 @@ from rest_framework.settings import APISettings
 
 DEFAULTS: dict[str, dict] = {
     "REMOTE_CONFIG": {
-        "theme": {
-            "path": "theme/",
-            "handler": "df_remote_config.handlers.default_handler",
-        },
+        # "theme": {
+        #     "path": "theme/",
+        #     "handler": "df_remote_config.handlers.default_handler",
+        # },
         "legal": {
             "path": "legal/",
             "handler": "df_remote_config.handlers.default_handler",

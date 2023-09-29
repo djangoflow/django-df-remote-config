@@ -7,6 +7,7 @@ from rest_framework import permissions, views
 class RemoteConfigView(views.APIView):
     handler: Union[str, Callable] = ""
     schema_name: str = ""
+    http_method_names = ["get"]
     permission_classes = [permissions.AllowAny]
 
     def get(self, request, *args, **kwargs):  # type: ignore

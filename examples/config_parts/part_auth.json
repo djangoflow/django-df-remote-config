@@ -1,0 +1,36 @@
+{
+  "providers": {
+    "google": {
+      "button_text": "Continue with Google",
+      "redirect_uri": {
+        "web": "https://example.com/auth/google/web",
+        "mobile": "https://example.com/auth/google/mobile"
+      }
+    },
+    "facebook": {
+      "enabled": false,
+      "button_text": "Continue with Facebook",
+      "redirect_uri": {
+        "web": "https://example.com/auth/facebook/web",
+        "mobile": "https://example.com/auth/facebook/mobile"
+      }
+    },
+    "discord": {
+      "enabled": true,
+      "client_id": "your_discord_client_id",
+      "button_text": "Continue with Discord",
+      "redirect_uri": {
+        "web": "https://example.com/auth/discord/web",
+        "mobile": "https://example.com/auth/discord/mobile"
+      }
+    }
+  },
+  "otp": {
+    "enabled": true,
+    "resend_duration": 60,
+    "redirect_uri": "magic_link_redirect_deep_link"
+  },
+  "email_password": {
+    "enabled": true
+  }
+}

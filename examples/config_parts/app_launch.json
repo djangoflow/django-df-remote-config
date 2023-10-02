@@ -1,0 +1,15 @@
+{
+  "app_version": {
+    "required": "1.1.0",
+    "latest": "2.1.1"
+  },
+  "updates": {
+    "parts": {
+      "config": "2023-10-02T10:00",
+      "auth": "2023-10-02T10:00",
+      "theme": "2023-10-02T10:00",
+      "home": "2023-10-02T10:00"
+    },
+    "local_notifications": "2023-10-02T10:00"
+  }
+}

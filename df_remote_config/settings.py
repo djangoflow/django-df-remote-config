@@ -1,13 +1,16 @@
+from typing import Any
+
 from django.conf import settings
 from rest_framework.settings import APISettings
 
-DEFAULTS: dict[str, dict] = {
+DEFAULTS: dict[str, Any] = {
     "PARTS": {
         "legal": {
-            "SCHEMA": "df_remote_config.schema.legal_schema",
             "HANDLER_CLASS": "df_remote_config.handlers.DefaultHandler",
         },
-    }
+        "default": {},
+    },
+    "DEFAULT_PART": "default",
 }
 
 api_settings = APISettings(getattr(settings, "DF_REMOTE_CONFIG", None), DEFAULTS)

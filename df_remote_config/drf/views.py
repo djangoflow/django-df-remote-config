@@ -7,7 +7,6 @@ from drf_spectacular.utils import OpenApiParameter, extend_schema
 from rest_framework import permissions, views
 from rest_framework.exceptions import NotFound
 
-# Additional imports as per your project structure, e.g., `api_settings`
 from df_remote_config.settings import api_settings
 
 
@@ -25,6 +24,12 @@ class RemoteConfigView(views.APIView):
                 location=OpenApiParameter.QUERY,
                 enum=api_settings.PARTS.keys(),
             ),
+            OpenApiParameter(
+                name="*",
+                required=False,
+                type=OpenApiTypes.STR,
+                location=OpenApiParameter.QUERY,
+            ),
         ],
         responses={
             200: OpenApiTypes.OBJECT,
@@ -37,5 +42,7 @@ class RemoteConfigView(views.APIView):
 
         part_config = api_settings.PARTS[part]
 
-        handler = import_string(part_config["HANDLER_CLASS"])()
+        handler = import_string(
+            part_config.get("HANDLER_CLASS", "df_remote_config.handlers.DefaultHandler")
+        )()
         return handler.handle_request(request, part, *args, **kwargs)

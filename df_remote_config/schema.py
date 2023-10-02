@@ -1,5 +1,5 @@
-PART_SCHEMAS = {
-    "legal_schema" : {
+PART_SCHEMAS: dict[str, dict] = {
+    "legal": {
         "type": "object",
         "properties": {
             "terms_of_service": {"type": "string"},

@@ -8,22 +8,25 @@ from df_remote_config.models import ConfigPart
 
 
 class AbstractHandler:
-    def handle_request(
-        self, request: HttpRequest, part_name: str, tag_name: Optional[str]
-    ) -> Response:
+    def handle_request(self, request: HttpRequest, part_name: str) -> Response:
         raise NotImplementedError
 
 
 class DefaultHandler(AbstractHandler):
-    def handle_request(
-        self, request: HttpRequest, part_name: str, tag_name: Optional[str]
-    ) -> Response:
-        queryset = ConfigPart.objects.filter(name=part_name).order_by("sequence")
+    def get_config_part(
+        self, request: HttpRequest, part_name: str
+    ) -> Optional[ConfigPart]:
+        attributes = request.GET.dict()
+        attributes.pop("part", None)
 
-        if tag_name:
-            queryset = queryset.filter(tags__name=tag_name)
+        return (
+            ConfigPart.objects.filter(name=part_name)
+            .filter_attributes(attributes)
+            .first()
+        )
 
-        if config_part := queryset.first():
+    def handle_request(self, request: HttpRequest, part_name: str) -> Response:
+        if config_part := self.get_config_part(request, part_name):
             return Response(config_part.json)
         else:
             raise NotFound()

@@ -1,21 +1,37 @@
-from typing import Optional
-
 from django.db import models
 from django.utils.module_loading import import_string
 
 from df_remote_config.fields import NoMigrationsChoicesField
+from df_remote_config.schema import DEFAULT_SCHEMA, PART_SCHEMAS
 from df_remote_config.settings import api_settings
 
 
 class ConfigAttribute(models.Model):
-    name = models.CharField(max_length=255, unique=True)
-    value = models.CharField(max_length=255, unique=True)
+    name = models.CharField(max_length=255)
+    value = models.CharField(max_length=255)
 
     def __str__(self) -> str:
-        return self.name
+        return f"{self.name}={self.value}"
+
+    class Meta:
+        unique_together = ("name", "value")
+
+
+class ConfigPartQuerySet(models.QuerySet):
+    def filter_attributes(self, attributes: dict[str, str]) -> "ConfigPartQuerySet":
+        if not attributes:
+            return self
+
+        attribute_condition = models.Q()
+        for name, value in attributes.items():
+            attribute_condition |= models.Q(name=name, value=value)
+        return self.filter(
+            attributes__in=ConfigAttribute.objects.filter(attribute_condition)
+        )
 
 
 class ConfigPart(models.Model):
+    objects = ConfigPartQuerySet.as_manager()
     name = NoMigrationsChoicesField(
         max_length=255, choices=[(part, part) for part in api_settings.PARTS]
     )
@@ -26,16 +42,12 @@ class ConfigPart(models.Model):
     def __str__(self) -> str:
         return f"ConfigPart<{self.id}>: {self.name}"
 
-    def get_schema(self) -> Optional[dict]:
-        if schema_path := api_settings.PARTS[self.name].get("SCHEMA"):
-            return import_string(schema_path)
-        return None
+    def get_schema(self) -> dict:
+        # If the schema is not defined in the settings, use the default schema
+        if "SCHEMA" not in api_settings.PARTS[self.name]:
+            return PART_SCHEMAS.get(self.name, DEFAULT_SCHEMA)
 
+        return import_string(api_settings.PARTS[self.name]["SCHEMA"])
 
-#
-#
-# def get_schema_by_name(name: str) -> dict:
-#     try:
-#         return JSONSchema.objects.get(name=name).schema
-#     except JSONSchema.DoesNotExist:
-#         return CONFIG_SCHEMA_MAP[name]
+    class Meta:
+        ordering = ("sequence",)

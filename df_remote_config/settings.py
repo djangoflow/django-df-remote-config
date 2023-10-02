@@ -9,6 +9,9 @@ DEFAULTS: dict[str, Any] = {
             "HANDLER_CLASS": "df_remote_config.handlers.DefaultHandler",
         },
         "default": {},
+        "app_launch": {
+            "HANDLER_CLASS": "df_remote_config.handlers.AppLaunchHandler",
+        },
     },
     "DEFAULT_PART": "default",
 }

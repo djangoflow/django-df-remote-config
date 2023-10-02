@@ -8,7 +8,20 @@ PART_SCHEMAS: dict[str, dict] = {
         "required": ["terms_of_service", "privacy_policy"],
     },
     "auth": {},
-    "launch": {},
+    "app_launch": {
+        "type": "object",
+        "properties": {
+            "app_version": {
+                "type": "object",
+                "properties": {
+                    "required": {"type": "string"},
+                    "latest": {"type": "string"},
+                },
+                "required": ["required", "latest"],
+            },
+        },
+        "required": ["app_version"],
+    },
 }
 
 DEFAULT_SCHEMA = {

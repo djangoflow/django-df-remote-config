@@ -1,12 +1,13 @@
 from django.db import models
 from django.utils.module_loading import import_string
+from model_utils.models import TimeStampedModel
 
 from df_remote_config.fields import NoMigrationsChoicesField
 from df_remote_config.schema import DEFAULT_SCHEMA, PART_SCHEMAS
 from df_remote_config.settings import api_settings
 
 
-class ConfigAttribute(models.Model):
+class ConfigAttribute(models.Model):  # type: ignore
     name = models.CharField(max_length=255)
     value = models.CharField(max_length=255)
 
@@ -30,7 +31,7 @@ class ConfigPartQuerySet(models.QuerySet):
         )
 
 
-class ConfigPart(models.Model):
+class ConfigPart(TimeStampedModel):
     objects = ConfigPartQuerySet.as_manager()
     name = NoMigrationsChoicesField(
         max_length=255, choices=[(part, part) for part in api_settings.PARTS]

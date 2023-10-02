@@ -1,6 +1,6 @@
 [project]
 name = "django-df-remote-config"
-version = "0.0.3"
+version = "0.0.4"
 description = "Django DF Remote Config"
 readme = "README.md"
 authors = [{name = "Apexive OSS", email = "open-source@apexive.com"}]
@@ -26,6 +26,7 @@ dependencies = [
     "djangorestframework>=3.12.0",
     "django-df-api-drf>=1.0.0",
     "django-jsoneditor",
+    "django-model-utils",
 ]
 
 [project.optional-dependencies]

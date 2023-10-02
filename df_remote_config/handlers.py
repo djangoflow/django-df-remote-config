@@ -1,5 +1,6 @@
 from typing import Optional
 
+from django.db.models import Max
 from django.http import HttpRequest
 from rest_framework.exceptions import NotFound
 from rest_framework.response import Response
@@ -33,3 +34,19 @@ class DefaultHandler(AbstractHandler):
             return Response(self.get_part_data(config_part))
         else:
             raise NotFound()
+
+
+class AppLaunchHandler(DefaultHandler):
+    def get_part_data(self, part: ConfigPart) -> dict:
+        data = super().get_part_data(part)
+
+        data["updates"] = {
+            "parts": {
+                part["name"]: part["modified"].isoformat()
+                for part in ConfigPart.objects.values("name").annotate(
+                    modified=Max("modified")
+                )
+            }
+        }
+
+        return data

@@ -3,16 +3,9 @@ from rest_framework.settings import APISettings
 
 DEFAULTS: dict[str, dict] = {
     "PARTS": {
-        # "theme": {
-        #     "path": "theme/",
-        #     "handler": "df_remote_config.handlers.default_handler",
-        # },
         "legal": {
-            "SCHEMA": "df_remote_config.schemas.legal_schema",
-            "HANDLER_CLASS": "df_remote_config.handlers.default_handler",
-        },
-        "auth": {
-            "HANDLER_CLASS": "df_remote_config.handlers.AuthHandler",
+            "SCHEMA": "df_remote_config.schema.legal_schema",
+            "HANDLER_CLASS": "df_remote_config.handlers.DefaultHandler",
         },
     }
 }

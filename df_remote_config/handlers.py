@@ -1,29 +1,29 @@
-from django.shortcuts import get_object_or_404
+from typing import Optional
+
+from django.http import HttpRequest
+from rest_framework.exceptions import NotFound
 from rest_framework.response import Response
 
-from df_remote_config.models import ConfigItem
+from df_remote_config.models import ConfigPart
 
 
-class BaseHandler:
-    def prepare_request(self, request):
-        pass
-
-    def get_config_part(self, request):
-        return ConfigPart.objects.filter(schema=request.data.schema, tags=request.data.tags)
-
-    def default_handler(request, schema_name, *args, **kwargs):  # type: ignore
-        config_item = get_object_or_404(
-            ConfigItem,
-            schema_name=schema_name,
-            name=request.GET.get("name", ConfigItem.DEFAULT_NAME),
-        )
-        return Response(config_item.json)
+class AbstractHandler:
+    def handle_request(
+        self, request: HttpRequest, part_name: str, tag_name: Optional[str]
+    ) -> Response:
+        raise NotImplementedError
 
 
-class AuthHandler(BaseHandler):
+class DefaultHandler(AbstractHandler):
+    def handle_request(
+        self, request: HttpRequest, part_name: str, tag_name: Optional[str]
+    ) -> Response:
+        queryset = ConfigPart.objects.filter(name=part_name).order_by("sequence")
 
-    def handle_request(request, schema_name, *args, **kwargs):  # type: ignore
-        data = {"providers": []}
-        return Response(data)
+        if tag_name:
+            queryset = queryset.filter(tags__name=tag_name)
 
-    # A/B condition, check cache etc
+        if config_part := queryset.first():
+            return Response(config_part.json)
+        else:
+            raise NotFound()

@@ -103,6 +103,4 @@ SPECTACULAR_SETTINGS = {
     **DEFAULT_SPECTACULAR_SETTINGS,
 }
 
-DF_REMOTE_CONFIG = {
-    "TEST_SETTING": "test-replaced",
-}
+DF_REMOTE_CONFIG = {}  # type: ignore

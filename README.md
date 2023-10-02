@@ -4,7 +4,13 @@
 Module for managing frontend application confiuration
 
 
-/remote_config/?part=legal&tags=default&...
+/remote_config/?part=legal&bundle_id=com.roblevine.saferide&...
+
+{
+"auth": {},
+"app_config": {},
+"app_launch": {}
+}
 
 
 ## Installation:

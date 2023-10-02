@@ -25,23 +25,17 @@ class RemoteConfigView(views.APIView):
                 location=OpenApiParameter.QUERY,
                 enum=api_settings.PARTS.keys(),
             ),
-            OpenApiParameter(
-                name="tag",
-                required=False,
-                type=OpenApiTypes.STR,
-                location=OpenApiParameter.QUERY,
-            ),
         ],
         responses={
             200: OpenApiTypes.OBJECT,
         },
     )
     def get(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
-        part = request.GET.get("part")
-        tag = request.GET.get("tag")
+        part = request.GET.get("part", api_settings.DEFAULT_PART)
         if part not in api_settings.PARTS:
             raise NotFound()
 
         part_config = api_settings.PARTS[part]
+
         handler = import_string(part_config["HANDLER_CLASS"])()
-        return handler.handle_request(request, part, tag)
+        return handler.handle_request(request, part, *args, **kwargs)

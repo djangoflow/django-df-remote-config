@@ -7,8 +7,9 @@ from df_remote_config.fields import NoMigrationsChoicesField
 from df_remote_config.settings import api_settings
 
 
-class ConfigTag(models.Model):
+class ConfigAttribute(models.Model):
     name = models.CharField(max_length=255, unique=True)
+    value = models.CharField(max_length=255, unique=True)
 
     def __str__(self) -> str:
         return self.name
@@ -19,7 +20,7 @@ class ConfigPart(models.Model):
         max_length=255, choices=[(part, part) for part in api_settings.PARTS]
     )
     sequence = models.PositiveIntegerField(default=1000)
-    tags = models.ManyToManyField(ConfigTag, blank=True)
+    attributes = models.ManyToManyField(ConfigAttribute, blank=True)
     json = models.JSONField(blank=True, default=dict)
 
     def __str__(self) -> str:

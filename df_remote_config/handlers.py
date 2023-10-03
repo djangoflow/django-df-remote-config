@@ -1,3 +1,4 @@
+import json
 from typing import Optional
 
 from django.db.models import Max
@@ -17,8 +18,7 @@ class DefaultHandler(AbstractHandler):
     def get_config_part(
         self, request: HttpRequest, part_name: str
     ) -> Optional[ConfigPart]:
-        attributes = request.GET.dict()
-        attributes.pop("part", None)
+        attributes = json.loads(request.GET.get("attributes", "{}"))
 
         return (
             ConfigPart.objects.filter(name=part_name)
@@ -31,7 +31,7 @@ class DefaultHandler(AbstractHandler):
 
     def handle_request(self, request: HttpRequest, part_name: str) -> Response:
         if config_part := self.get_config_part(request, part_name):
-            return Response(self.get_part_data(config_part))
+            return Response({"data": self.get_part_data(config_part)})
         else:
             raise NotFound()
 

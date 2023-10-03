@@ -25,9 +25,10 @@ class RemoteConfigView(views.APIView):
                 enum=api_settings.PARTS.keys(),
             ),
             OpenApiParameter(
-                name="*",
+                name="arbitrary params",
+                description="Dict of arbitrary key value pairs",
                 required=False,
-                type=OpenApiTypes.STR,
+                type=OpenApiTypes.OBJECT,
                 location=OpenApiParameter.QUERY,
             ),
         ],

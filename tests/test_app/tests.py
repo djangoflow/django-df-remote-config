@@ -1,5 +1,3 @@
-import json
-
 import pytest
 from rest_framework.test import APIClient
 
@@ -14,7 +12,7 @@ def test_remote_config_returns_200(client: APIClient) -> None:
     response = client.get("/api/v1/remoteconfig/?part=legal")
 
     assert response.status_code == 200
-    assert response.json()["data"] == {"message": "test"}
+    assert response.json() == {"message": "test"}
 
 
 @pytest.mark.parametrize(
@@ -41,12 +39,12 @@ def test_remote_config_attribute_filtering(
         "/api/v1/remoteconfig/",
         {
             "part": part_name,
-            "attributes": json.dumps({attribute_name: search_value}),
+            attribute_name: search_value,
         },
     )
 
     if is_success:
         assert response.status_code == 200
-        assert response.json()["data"] == data
+        assert response.json() == data
     else:
         assert response.status_code == 404

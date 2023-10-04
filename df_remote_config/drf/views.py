@@ -7,7 +7,6 @@ from drf_spectacular.utils import OpenApiParameter, extend_schema
 from rest_framework import permissions, views
 from rest_framework.exceptions import NotFound
 
-from df_remote_config.drf.serializers import RemoteConfigSerializer
 from df_remote_config.settings import api_settings
 
 
@@ -29,12 +28,12 @@ class RemoteConfigView(views.APIView):
                 name="attributes",
                 description="json-encoded object of attribute key value pairs",
                 required=False,
-                type=OpenApiTypes.STR,
+                type=OpenApiTypes.OBJECT,
                 location=OpenApiParameter.QUERY,
             ),
         ],
         responses={
-            200: RemoteConfigSerializer,
+            200: OpenApiTypes.OBJECT,
         },
     )
     def get(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:

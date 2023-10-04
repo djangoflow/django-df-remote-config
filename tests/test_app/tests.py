@@ -12,7 +12,7 @@ def test_remote_config_returns_200(client: APIClient) -> None:
     response = client.get("/api/v1/remoteconfig/?part=legal")
 
     assert response.status_code == 200
-    assert response.json() == {"message": "test"}
+    assert response.json()["part"] == {"message": "test"}
 
 
 @pytest.mark.parametrize(
@@ -45,6 +45,6 @@ def test_remote_config_attribute_filtering(
 
     if is_success:
         assert response.status_code == 200
-        assert response.json() == data
+        assert response.json()["part"] == data
     else:
         assert response.status_code == 404

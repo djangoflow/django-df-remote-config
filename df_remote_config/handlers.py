@@ -31,7 +31,7 @@ class DefaultHandler(AbstractHandler):
 
     def handle_request(self, request: HttpRequest, part_name: str) -> Response:
         if config_part := self.get_config_part(request, part_name):
-            return Response(self.get_part_data(config_part))
+            return Response({"part": self.get_part_data(config_part)})
         else:
             raise NotFound()
 

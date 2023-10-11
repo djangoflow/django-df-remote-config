@@ -7,4 +7,4 @@ class DfRemoteConfigConfig(AppConfig):
     verbose_name = _("Django DF Remote Config")
 
     class DFMeta:
-        api_path = "remoteconfig/"
+        api_path = "remote-config/"

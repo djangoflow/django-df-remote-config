@@ -1,5 +1,3 @@
-from typing import Optional
-
 from django.contrib import admin
 from django.db.models.query import QuerySet
 from django.http import HttpRequest
@@ -21,11 +19,12 @@ class ConfigPartAdmin(admin.ModelAdmin):
     def get_queryset(self, request: HttpRequest) -> QuerySet[ConfigPart]:
         return super().get_queryset(request).prefetch_related("attributes")
 
+    @admin.display(description="attributes")
     def attributes_(self, obj: ConfigPart) -> str:
         return "&".join([str(attr) for attr in obj.attributes.all()])
 
     def get_readonly_fields(
-        self, request: HttpRequest, obj: Optional[ConfigPart] = None
+        self, request: HttpRequest, obj: ConfigPart | None = None
     ) -> list[str]:
         if obj:
             return ["name"]

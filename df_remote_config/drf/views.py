@@ -23,7 +23,7 @@ class RemoteConfigView(views.APIView):
                 required=True,
                 type=OpenApiTypes.STR,
                 location=OpenApiParameter.QUERY,
-                enum=api_settings.PARTS.keys(),
+                enum=list(api_settings.PARTS.keys()),
             ),
             OpenApiParameter(
                 name="params",

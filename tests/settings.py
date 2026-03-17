@@ -15,7 +15,7 @@ DEBUG = True
 ROOT_URLCONF = "tests.urls"
 SECRET_KEY = "111111"
 
-DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = "auth.User"
 
 AUTHENTICATION_BACKENDS = [

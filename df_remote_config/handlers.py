@@ -1,5 +1,3 @@
-from typing import Optional
-
 from django.db.models import Max
 from django.http import HttpRequest
 from rest_framework.exceptions import NotFound
@@ -16,7 +14,7 @@ class AbstractHandler:
 class DefaultHandler(AbstractHandler):
     def get_config_part(
         self, request: HttpRequest, part_name: str
-    ) -> Optional[ConfigPart]:
+    ) -> ConfigPart | None:
         attributes = request.GET.dict()
         attributes.pop("part", None)
 

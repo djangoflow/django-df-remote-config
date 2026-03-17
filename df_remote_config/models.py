@@ -1,3 +1,5 @@
+from typing import Self
+
 from django.db import models
 from django.utils.module_loading import import_string
 from model_utils.models import TimeStampedModel
@@ -15,11 +17,16 @@ class ConfigAttribute(models.Model):  # type: ignore
         return f"{self.name}={self.value}"
 
     class Meta:
-        unique_together = ("name", "value")
+        constraints = [
+            models.UniqueConstraint(
+                fields=["name", "value"],
+                name="configattribute_name_value_uniq",
+            ),
+        ]
 
 
 class ConfigPartQuerySet(models.QuerySet):
-    def filter_attributes(self, attributes: dict[str, str]) -> "ConfigPartQuerySet":
+    def filter_attributes(self, attributes: dict[str, str]) -> Self:
         if not attributes:
             return self
 

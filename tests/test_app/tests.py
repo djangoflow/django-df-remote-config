@@ -9,7 +9,7 @@ pytestmark = pytest.mark.django_db
 def test_remote_config_returns_200(client: APIClient) -> None:
     ConfigPart.objects.create(name="legal", json={"message": "test"})
 
-    response = client.get("/api/v1/remoteconfig/?part=legal")
+    response = client.get("/api/v1/remote-config/?part=legal")
 
     assert response.status_code == 200
     assert response.json()["part"] == {"message": "test"}
@@ -36,7 +36,7 @@ def test_remote_config_attribute_filtering(
     part.attributes.add(attr)
 
     response = client.get(
-        "/api/v1/remoteconfig/",
+        "/api/v1/remote-config/",
         {
             "part": part_name,
             attribute_name: search_value,
